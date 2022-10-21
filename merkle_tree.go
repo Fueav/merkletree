@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"hash"
+	"sort"
 )
 
 //Content represents the data that is stored and verified by the tree. A type that
@@ -189,7 +190,12 @@ func buildIntermediate(nl []*Node, t *MerkleTree) (*Node, error) {
 		if i+1 == len(nl) {
 			right = i
 		}
-		chash := append(nl[left].Hash, nl[right].Hash...)
+
+		var combined []string
+		combined = append(combined, string(nl[left].Hash))
+		combined = append(combined, string(nl[right].Hash))
+		sort.Strings(combined)
+		chash := append([]byte(combined[0]), combined[1]...)
 		if _, err := h.Write(chash); err != nil {
 			return nil, err
 		}
