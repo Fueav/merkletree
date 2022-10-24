@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"hash"
-	"sort"
 )
 
 //Content represents the data that is stored and verified by the tree. A type that
@@ -187,28 +186,38 @@ func buildIntermediate(nl []*Node, t *MerkleTree) (*Node, error) {
 	for i := 0; i < len(nl); i += 2 {
 		h := t.hashStrategy()
 		var left, right int = i, i + 1
+		var leftNode, rightNode *Node
 		if i+1 == len(nl) {
-			right = i
+			if len(nodes) != 1 {
+				nodes = append(nodes, nl[i])
+				break
+			}
+			leftNode = nl[left]
+			rightNode = nodes[0]
+		} else {
+			leftNode = nl[left]
+			rightNode = nl[right]
 		}
 
-		var combined []string
-		combined = append(combined, string(nl[left].Hash))
-		combined = append(combined, string(nl[right].Hash))
-		sort.Strings(combined)
-		chash := append([]byte(combined[0]), combined[1]...)
+		if bytes.Compare(rightNode.Hash, leftNode.Hash) < 0 {
+			temp := leftNode
+			leftNode = rightNode
+			rightNode = temp
+		}
+		chash := append([]byte(leftNode.Hash), rightNode.Hash...)
 		if _, err := h.Write(chash); err != nil {
 			return nil, err
 		}
 		n := &Node{
-			Left:  nl[left],
-			Right: nl[right],
+			Left:  leftNode,
+			Right: rightNode,
 			Hash:  h.Sum(nil),
 			Tree:  t,
 		}
 		nodes = append(nodes, n)
-		nl[left].Parent = n
-		nl[right].Parent = n
-		if len(nl) == 2 {
+		leftNode.Parent = n
+		rightNode.Parent = n
+		if len(nl) == 2 || (bytes.Compare(nodes[0].Hash, rightNode.Hash)) == 0 || (bytes.Compare(nodes[0].Hash, leftNode.Hash)) == 0 {
 			return n, nil
 		}
 	}
