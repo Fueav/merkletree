@@ -16,13 +16,17 @@ the tree. This property allows the tree to be reproduced and thus verified by on
 of the tree. The benefit of the tree structure is verifying any single content entry in the tree will require only
 nlog2(n) steps in the worst case.
 
+This repo is a fork from "github.com/cbergoon/merkletree", The purpose is to achieve solidity compatible merkleTree Proof.
+The original repo used duplicateOdd  Handling the problem of single-node hash. This repo uses sortPairs and no duplicateOdd to realize solidity compatible.
+Inspired by "github.com/miguelmota/merkletreejs"
+
 #### Documentation 
 
-See the docs [here](https://godoc.org/github.com/cbergoon/merkletree).
+See the docs [here](https://godoc.org/github.com/Fueav/merkletree).
 
 #### Install
 ```
-go get github.com/cbergoon/merkletree
+go get github.com/Fueav/merkletree
 ```
 
 #### Example Usage
@@ -34,7 +38,7 @@ import (
   "crypto/sha256"
   "log"
 
-  "github.com/cbergoon/merkletree"
+  "github.com/Fueav/merkletree"
 )
 
 //TestContent implements the Content interface provided by merkletree and represents the content stored in the tree.
