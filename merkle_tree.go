@@ -161,16 +161,7 @@ func buildWithContent(cs []Content, t *MerkleTree) (*Node, []*Node, error) {
 			Tree: t,
 		})
 	}
-	if len(leafs)%2 == 1 {
-		duplicate := &Node{
-			Hash: leafs[len(leafs)-1].Hash,
-			C:    leafs[len(leafs)-1].C,
-			leaf: true,
-			dup:  true,
-			Tree: t,
-		}
-		leafs = append(leafs, duplicate)
-	}
+
 	root, err := buildIntermediate(leafs, t)
 	if err != nil {
 		return nil, nil, err
