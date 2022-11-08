@@ -1,4 +1,4 @@
-<h1 align="center">Merkle Tree in Golang</h1>
+<h1 align="center">EVM Compatible Merkle Tree in Golang</h1>
 <p align="center">
 <a href="https://travis-ci.org/cbergoon/merkletree"><img src="https://travis-ci.org/cbergoon/merkletree.svg?branch=master" alt="Build"></a>
 <a href="https://goreportcard.com/report/github.com/cbergoon/merkletree"><img src="https://goreportcard.com/badge/github.com/cbergoon/merkletree?1=1" alt="Report"></a>
